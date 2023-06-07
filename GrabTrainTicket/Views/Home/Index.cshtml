@@ -1,0 +1,96 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>12306抢票排队</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/layui/2.6.8/css/layui.min.css">
+</head>
+
+<body>
+    <div class="layui-container">
+        <h2>12306抢票排队</h2>
+        <button id="queueButton" class="layui-btn layui-btn-normal">进入排队</button>
+        <div id="queueNumber"></div>
+        <div id="messageBox" style="margin-top: 20px;"></div>
+    </div>  
+    
+   @* <div class="layui-container">
+        <h2>处理Rabbitmq队列消息</h2>
+        <button id="consumeButton" class="layui-btn layui-btn-normal">消费</button>
+        <div id="consumeMessageBox" style="margin-top: 20px;"></div>
+    </div>*@
+    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/layui/2.6.8/layui.min.js"></script>
+    @*<script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.12/signalr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var connection = new signalR.HubConnectionBuilder()
+                .withUrl("/queueHub")
+                .build();
+
+
+
+            //connection.on("ReceiveQueueNumber", function (number) {
+            //    $("#queueNumber").text("您的排队号码是：" + number);
+            //});
+            connection.on('QueueUpdate', function (data) {
+                $('#queueNumber').text('您的排队号码: ' + data.queueNumber);
+            });
+            
+            connection.on("ReceiveMessage", function (message) {
+                $("#messageBox").append("<p>" + message + "</p>");
+            });
+
+            connection.start().then(function () {
+                console.log('Connected to server');
+            }).catch(function (err) {
+                console.error(err.toString());
+            });
+
+            function joinQueue() {
+                connection.invoke('JoinQueue');
+            }
+
+              $("#queueButton").click(function(){
+                  joinQueue();
+              });
+
+              // $("#consumeButton").click(function(){
+              //    $.ajax({
+              //      url: '/Home/StartProcessingTickets',
+              //      type: 'GET',
+              //      success: function(data) {
+              //        $('#consumeMessageBox').text(data);
+              //      },
+              //      error: function(xhr, status, error) {
+              //        console.error(error);
+              //      }
+              //   });
+              //});
+        });
+
+
+        $(document).ready(function () {
+          //var socket = io();
+
+          //socket.on('queueUpdate', function (data) {
+          //  $('#queueNumber').text('您的排队号码: ' + data.queueNumber);
+          //});
+
+          //function joinQueue() {
+          //  socket.emit('joinQueue');
+          //}
+
+        
+          
+        });
+    </script>
+</body>
+
+</html>
