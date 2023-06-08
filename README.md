@@ -5,7 +5,7 @@
 
 ### docker容器中rabbitmq
 ![image](https://raw.githubusercontent.com/WuLex/UsefulPicture/main/rabbitmqimg/grabtrainticket/result1.png)
-
+![image](https://raw.githubusercontent.com/WuLex/UsefulPicture/main/rabbitmqimg/grabtrainticket/result4.png)
 ### rabbitmq 管理界面
 ![image](https://raw.githubusercontent.com/WuLex/UsefulPicture/main/rabbitmqimg/grabtrainticket/result2.png)
 
